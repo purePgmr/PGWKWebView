@@ -80,7 +80,7 @@ DESC
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/purePgmr/PGWKWebView.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/purePgmr/PGWKWebView.git", :tag => "v#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -135,7 +135,7 @@ DESC
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"
   s.frameworks = 'AddressBook', 'Contacts', 'CoreLocation', 'AudioToolbox', 'AVFoundation', 'CoreMotion', 'CFNetwork', 'Foundation', 'UIKit', 'CoreGraphics', 'CoreText', 'QuartzCore', 'CoreTelephony', 'SystemConfiguration'
-
+  # s.vendored_libraries = 'PGWKWebView/Classes/libWeChatSDK.a', 'PGWKWebView/Classes/libGVRSDK.a' 
    s.dependency 'GVRSDK'
    s.dependency 'WechatOpenSDK'
    s.dependency 'AFNetworking', '~> 2.5'
