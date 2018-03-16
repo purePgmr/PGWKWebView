@@ -80,22 +80,18 @@
 #pragma mark - WKNavigationDelegate
 // 页面开始加载时调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
-    NSLog(@"xukai --- didStartProvisionalNavigation");
 }
 
 // 当内容开始返回时调用
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
-    NSLog(@"xukai --- didCommitNavigation");
 }
 
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    NSLog(@"xukai --- didFinishNavigation");
 }
 
 // 页面加载失败时调用
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation {
-    NSLog(@"xukai --- didFailProvisionalNavigation");
 }
 
 // 处理拨打电话以及Url跳转等等
@@ -177,12 +173,10 @@
                 if ([WXApi isWXAppInstalled]) {
                     [self evaluateJavaScript:@"_Native_hasWechat(true)" completionHandler:^(id item, NSError * _Nullable error) {
                         // Block中处理是否通过了或者执行JS错误的代码
-                        NSLog(@"%@",error);
                     }];
                 }else{
                     [self evaluateJavaScript:@"_Native_hasWechat(false)" completionHandler:^(id item, NSError * _Nullable error) {
                         // Block中处理是否通过了或者执行JS错误的代码
-                        NSLog(@"%@",error);
                     }];
                 }
             }
@@ -274,12 +268,10 @@
                                             completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                 // 待测试网络不好,或者网络加载失败时的回调
                                                 NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                NSLog(@"%@", dataStr);
                                                 // NOTE: 调用支付结果开始支付
                                                 //应用注册scheme,在AliSDKDemo-Info.plist定义URL types
-                                                NSString *appScheme = @"PGWKWebView";
+                                                NSString *appScheme = _configDict[@"alipay"][@"SCHEME"];
                                                 [[AlipaySDK defaultService] payOrder:dataStr fromScheme:appScheme callback:^(NSDictionary *resultDic) {
-                                                    NSLog(@"reslut = %@",resultDic);
                                                     [self aliPayCallJs:[resultDic objectForKey:@"resultStatus"]];
                                                 }];
                                             }];
@@ -299,7 +291,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_aliPayResultCode(%@)",resultStatus];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -310,7 +301,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_wechatLoginResultInfo(%@)",responseJson];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -321,7 +311,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_wechatShareResultCode(%@)",errorcode];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -348,8 +337,10 @@
     [_iFlySpeechSynthesizer setParameter:@"50"
                                   forKey: [IFlySpeechConstant VOLUME]];
     //发音人，默认为”xiaoyan”，可以设置的参数列表可参考“合成发音人列表”
-    [_iFlySpeechSynthesizer setParameter:@"xiaomei "
-                                  forKey: [IFlySpeechConstant VOICE_NAME]];
+    if (_configDict[@"ifly"][@"voiceName"] != nil ) {
+        [_iFlySpeechSynthesizer setParameter:_configDict[@"ifly"][@"voiceName"]
+                                      forKey: [IFlySpeechConstant VOICE_NAME]];
+    }
     //保存合成文件名，如不再需要，设置为nil或者为空表示取消，默认目录位于library/cache下
     //    [_iFlySpeechSynthesizer setParameter:@"tts.pcm" forKey: [IFlySpeechConstant TTS_AUDIO_PATH]];
     [_iFlySpeechSynthesizer setParameter:nil forKey: [IFlySpeechConstant TTS_AUDIO_PATH]];
@@ -361,7 +352,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_speechComplete('%@')",error.errorDesc];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -410,7 +400,6 @@
         NSString *method = [NSString stringWithFormat:@"_Native_recognizerResult('%@')",_recognizerResult];
         [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
             // Block中处理是否通过了或者执行JS错误的代码
-            NSLog(@"%@",error);
         }];
     }
 }
@@ -420,7 +409,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_recognizerError('%@')",error.errorDesc];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -429,7 +417,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_recognizerEnd()"];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -439,7 +426,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_recognizerBegin()"];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -448,7 +434,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_recognizerVolume(%d)",volume];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -457,7 +442,6 @@
     NSString *method = [NSString stringWithFormat:@"_Native_recognizerCancel()"];
     [self evaluateJavaScript:method completionHandler:^(id item, NSError * _Nullable error) {
         // Block中处理是否通过了或者执行JS错误的代码
-        NSLog(@"%@",error);
     }];
 }
 
@@ -466,7 +450,7 @@
     NSURL *urlScheme = [NSURL URLWithString:urlSchemeStr];
     if ([[UIDevice currentDevice].systemVersion integerValue] >= 10) {
         //iOS10以后,使用新API
-        [[UIApplication sharedApplication] openURL:urlScheme options:@{} completionHandler:^(BOOL success) { NSLog(@"scheme调用结束"); }]; }
+        [[UIApplication sharedApplication] openURL:urlScheme options:@{} completionHandler:^(BOOL success) {  }]; }
     else {
         //iOS10以前,使用旧API
         [[UIApplication sharedApplication] openURL:urlScheme];

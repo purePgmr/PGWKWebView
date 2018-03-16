@@ -263,14 +263,8 @@
     // 提示：要监控网络连接状态，必须要先调用单例的startMonitoring方法
     [manager startMonitoring];
     [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        if (status == -1) {
-            NSLog(@"未识别网络");
-        }
-        if (status == 0) {
-            NSLog(@"未连接网络");
-        }
+        // 3G/4G网络
         if (status == 1) {
-            NSLog(@"3G/4G网络");
             // 初始化对话框
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"图片较大,当前使用3G/4G网络,确定继续查看吗?" preferredStyle:UIAlertControllerStyleAlert];
             // 继续下载
@@ -285,8 +279,8 @@
             // 取消
             [self presentViewController:alert animated:true completion:nil];
         }
+        // wifi网络
         if (status == 2) {
-            NSLog(@"Wifi网络");
             // 下载图片
             [self StartDownLoadImage];
         }
@@ -322,12 +316,6 @@
     _label.frame = CGRectMake((SCREEN_WIDTH-labelSize.width) / 2 + 2, (SCREEN_HEIGHT / 2) + progressRadius / 2 - 45, 85, 30);
     _label.textColor = UIColorFromHex(0xffffff);
     [self.view addSubview:_label];
-
-//    [_hourGlass showWhileExecutingBlock:^{
-//        [self myTask];
-//    } completion:^{
-//        [self.navigationController popToRootViewControllerAnimated:YES];
-//    }];
 }
 
 -(void)loadCloseButton{
@@ -336,11 +324,8 @@
     }else{
       _closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, 20, 30, 30)];
     }
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *imagePath = [resourcePath stringByAppendingPathComponent:@"closePanorama.png"];
-    //创建图片
-    self.closeBtnImage = [UIImage imageWithContentsOfFile:imagePath];
-    [_closeBtn setBackgroundImage:self.closeBtnImage forState:UIControlStateNormal];
+    [_closeBtn setTitle:@"x" forState:UIControlStateNormal];
+    _closeBtn.titleLabel.font = [UIFont systemFontOfSize: 28.0];
     [_closeBtn addTarget:nil action:@selector(closeVC) forControlEvents: UIControlEventTouchUpInside];
     [self.view addSubview:_closeBtn];
 }
@@ -365,7 +350,6 @@
     self.closeBtn = nil;
     self.closeBtnImage = nil;
     [self removeFromParentViewController];
-//    [self.vrimg retainCount];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -382,6 +366,5 @@
     NSInteger nameIndex = [strArray count] - 1;
     self.panoramaImgName = strArray[nameIndex];
     [self StartDownLoadImage];
-//    [self loadImage];
 }
 @end

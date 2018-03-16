@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "PGWKWebView"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "A Simple Powerful extend easily WKWebView"
 
   # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-集成三方框架WKWebView
+集成很多三方框架的简易WKWebView
 DESC
 
   s.homepage     = "https://github.com/purePgmr/PGWKWebView"
@@ -135,7 +135,7 @@ DESC
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"
   s.frameworks = 'AddressBook', 'Contacts', 'CoreLocation', 'AudioToolbox', 'AVFoundation', 'CoreMotion', 'CFNetwork', 'Foundation', 'UIKit', 'CoreGraphics', 'CoreText', 'QuartzCore', 'CoreTelephony', 'SystemConfiguration'
-  # s.vendored_libraries = 'PGWKWebView/Classes/libWeChatSDK.a', 'PGWKWebView/Classes/libGVRSDK.a' 
+  # s.vendored_libraries = 'PGWKWebView/Classes/libWeChatSDK.a', 'PGWKWebView/Classes/libGVRSDK.a'
    s.dependency 'GVRSDK'
    s.dependency 'WechatOpenSDK'
    s.dependency 'AFNetworking', '~> 2.5'

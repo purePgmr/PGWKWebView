@@ -19,7 +19,7 @@
 // 微信注册App
 + (void)wechatRegisterApp{
     NSDictionary *configDict = [FileTools readLocalFileWithName:@"PGConfig"];
-    [WXApi registerApp:configDict[@"WeChat"][@"AppID"]];
+    [WXApi registerApp:configDict[@"wechat"][@"AppID"]];
 }
 
 // 微信登录响应处理
@@ -30,9 +30,8 @@
         SendAuthResp *temp = (SendAuthResp *)resp;
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-        NSString *accessUrlStr = [NSString stringWithFormat:@"%@/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code", WX_BASE_URL, configDict[@"WeChat"][@"AppID"], configDict[@"WeChat"][@"AppSecret"], temp.code];
+        NSString *accessUrlStr = [NSString stringWithFormat:@"%@/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code", WX_BASE_URL, configDict[@"wechat"][@"AppID"], configDict[@"wechat"][@"AppSecret"], temp.code];
         [manager GET:accessUrlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"请求access的response = %@", responseObject);
             NSDictionary *accessDict = [NSDictionary dictionaryWithDictionary:responseObject];
             NSString *accessToken = [accessDict objectForKey:WX_ACCESS_TOKEN];
             NSString *openID = [accessDict objectForKey:WX_OPEN_ID];
@@ -46,7 +45,6 @@
             }
             [self wechatLoginByRequestForUserInfo];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"获取access_token时出错 = %@", error);
         }];
     }
 }
@@ -64,13 +62,11 @@
         // 将字典序列化为json字符串
         NSData *data = [NSJSONSerialization dataWithJSONObject:userDict options:kNilOptions error:nil];
         NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"请求用户信息的response = %@", responseObject);
         
         // NSMutableDictionary *userDict = [NSMutableDictionary dictionaryWithDictionary:responseObject];
         // 发送登录成功通知
         [[NSNotificationCenter defaultCenter] postNotificationName:@"wechatLoginResultInfo" object:json];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"获取用户信息时出错 = %@", error);
     }];
 }
 
