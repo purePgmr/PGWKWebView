@@ -1,6 +1,6 @@
 ![logo](https://static.oschina.net/uploads/img/201803/16163247_8FPf.png "logo")
 
-PGWKWebView是一款基于IOS的WKWebView的浏览器框架.目前仅开发了IOS版本,后续将开发Android版本以及前端js调用框架,进一步降低学习成本.
+PGWKWebView是一款基于IOS的WKWebView的浏览器框架.目前仅开发了IOS版本,后续将开发Android版本以及前端js调用框架,进一步降低学习成本.详情请查阅[文档](http://pgwk.mydoc.io)
 
 目前PGWKWebView处于0.0.2版本,后续将持续迭代更新,适配更多功能,变得更加轻量易扩展.目标是超越Hbuilder以及Cordova内置的WebView的功能、性能、稳定性.做一个完善的WebView,尽可能的降低Hybrid App的开发成本.
 
